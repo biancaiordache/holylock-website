@@ -329,3 +329,176 @@ blockquote cite {
     font-size: 0.875rem;
   }
 }
+
+/* ================================================================
+   Landing page — single-screen, minimal. No header nav, no features
+   list, no blockquote. Just the headline, a one-line sub, the App
+   Store badge, a phone screenshot on the right, and a thin footer.
+   ================================================================ */
+
+body.landing {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+}
+
+.landing-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding: 3rem 1.5rem 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .landing-main {
+    flex-direction: row;
+    gap: 4.5rem;
+    padding: 3rem 3rem 6rem;
+  }
+}
+
+.landing-copy {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .landing-copy {
+    text-align: left;
+  }
+}
+
+.landing-headline {
+  font-family: 'EB Garamond', 'Fraunces', Georgia, serif;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.25rem;
+}
+
+.landing-accent {
+  color: var(--burgundy);
+  font-style: italic;
+  font-weight: 700;
+}
+
+.landing-sub {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  color: var(--ink-muted);
+  line-height: 1.45;
+  margin-bottom: 2.25rem;
+  max-width: 32ch;
+}
+
+@media (min-width: 900px) {
+  .landing-sub {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.landing-copy .landing-sub {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 900px) {
+  .landing-copy .landing-sub {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.landing-badge {
+  display: inline-block;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.landing-badge:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.landing-badge img {
+  width: 200px;
+  height: auto;
+  display: block;
+}
+
+.landing-tagline {
+  margin-top: 0.9rem;
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}
+
+.landing-visual {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 900px) {
+  .landing-visual {
+    max-width: 360px;
+  }
+}
+
+.landing-screenshot {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 32px;
+  box-shadow: 0 20px 60px rgba(139, 64, 73, 0.12),
+              0 6px 20px rgba(139, 64, 73, 0.08);
+}
+
+.landing-footer {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+  border-top: none;
+  margin-top: 0;
+}
+
+.landing-footer nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.landing-footer nav a {
+  color: var(--ink-muted);
+}
+
+.landing-footer nav a:hover {
+  color: var(--burgundy);
+  text-decoration: none;
+}
+
+.landing-footer nav span {
+  color: var(--ink-faint);
+  opacity: 0.6;
+}
+
+.landing-footer p {
+  margin: 0;
+  color: var(--ink-faint);
+}
