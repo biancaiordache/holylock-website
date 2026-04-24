@@ -1,0 +1,331 @@
+/* HolyLock marketing site — cream, burgundy, rose. Mirrors the iOS app's
+   design language: serif display type, soft backgrounds, warm color. */
+
+:root {
+  --cream: #F7F1EA;
+  --cream-deep: #EDE4D6;
+  --ivory: #FBF7F1;
+  --ink: #1A1A1A;
+  --ink-muted: #666666;
+  --ink-faint: #999999;
+  --rose: #D4A5A5;
+  --rose-pale: #EED9D9;
+  --burgundy: #8B4049;
+  --burgundy-soft: #A56167;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  font-family: 'EB Garamond', 'Fraunces', Georgia, 'Times New Roman', serif;
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 2.5rem 0 0.75rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--burgundy);
+  letter-spacing: 0.01em;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--ink);
+}
+
+p.muted {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+}
+
+a {
+  color: var(--burgundy);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+a:hover {
+  color: var(--burgundy-soft);
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.container-wide {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+/* Header */
+header {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+header .wordmark {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+header nav {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9375rem;
+}
+
+header nav a {
+  color: var(--ink-muted);
+}
+
+header nav a:hover {
+  color: var(--burgundy);
+  text-decoration: none;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 3rem 1.5rem 4rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hero-accent {
+  color: var(--burgundy);
+  font-style: italic;
+}
+
+.hero-sub {
+  font-size: 1.125rem;
+  color: var(--ink-muted);
+  max-width: 540px;
+  margin: 1rem auto 2rem;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--rose);
+  color: white;
+  padding: 0.875rem 1.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  box-shadow: 0 4px 14px rgba(212, 165, 165, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(212, 165, 165, 0.45);
+  text-decoration: none;
+  color: white;
+}
+
+.cta-muted {
+  display: inline-block;
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+}
+
+/* Feature section */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.feature h3 {
+  margin-top: 0;
+}
+
+.feature p {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+}
+
+/* Content pages (legal/support) */
+.content {
+  background: var(--ivory);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 18px;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+.content h1 {
+  font-size: 2.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.content .effective-date {
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.content p,
+.content li {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.content ul, .content ol {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.content li {
+  margin-bottom: 0.5rem;
+}
+
+/* FAQ */
+.faq-item {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item h3 {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  margin-bottom: 0.5rem;
+}
+
+.faq-item p {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+}
+
+/* Contact card */
+.contact-card {
+  background: var(--rose-pale);
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: center;
+  margin: 2rem 0 3rem;
+}
+
+.contact-card h3 {
+  color: var(--burgundy);
+  margin-top: 0;
+}
+
+.contact-card a {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 4rem;
+}
+
+footer nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+footer nav a {
+  color: var(--ink-muted);
+}
+
+/* Scripture pull-quote */
+blockquote {
+  border-left: 3px solid var(--rose);
+  padding-left: 1.25rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--ink-muted);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+blockquote cite {
+  display: block;
+  font-style: normal;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: var(--ink-faint);
+  margin-top: 0.5rem;
+}
+
+/* Small screens */
+@media (max-width: 640px) {
+  .content {
+    padding: 2rem 1.5rem;
+    border-radius: 14px;
+  }
+
+  header {
+    padding: 1rem;
+  }
+
+  header nav {
+    gap: 1rem;
+    font-size: 0.875rem;
+  }
+}
