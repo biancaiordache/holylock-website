@@ -445,7 +445,7 @@ body.landing {
 
 .landing-visual {
   width: 100%;
-  max-width: 320px;
+  max-width: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -453,7 +453,7 @@ body.landing {
 
 @media (min-width: 900px) {
   .landing-visual {
-    max-width: 360px;
+    max-width: 300px;
   }
 }
 
