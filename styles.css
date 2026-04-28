@@ -792,10 +792,12 @@ body.landing {
    sized so the page fits in one screen with a small scroll only if
    needed. Tap-to-play (no autoplay) on mobile — JS adds the
    `landing-media-needs-tap` class which surfaces the play button. */
+/* Hide the hero video on mobile — the layout doesn't have room for
+   it alongside the headline + form within the no-scroll viewport,
+   and the splash + play-button overlay was clashing with the form. */
 @media (max-width: 700px) {
   .landing-visual {
-    max-width: 280px;
-    margin-top: 1rem;
+    display: none;
   }
 }
 
