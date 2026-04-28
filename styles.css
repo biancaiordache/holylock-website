@@ -592,13 +592,6 @@ body.landing {
   border: 0;
 }
 
-.landing-tagline {
-  margin: 1rem 0 0;
-  color: var(--ink-faint);
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
-}
-
 .landing-visual {
   width: 100%;
   max-width: 240px;
