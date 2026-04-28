@@ -430,18 +430,11 @@ body.landing {
   width: 100%;
   max-width: 640px;
   text-align: center;
-  /* Push the copy down a touch so the headline reads as more
-     vertically centered against the visual on its right. The icon
-     in the top corner already eats some optical weight at the
-     top, so the centered flex content needed a nudge down to
-     feel balanced. */
-  padding-top: 2.5rem;
 }
 
 @media (min-width: 900px) {
   .landing-copy {
     text-align: left;
-    padding-top: 4rem;
   }
 }
 
@@ -717,58 +710,34 @@ body.landing {
    compositor and physically masks the rendered output regardless of
    element type — so <video> pixels cannot draw past it. This is the
    only universally reliable way to round corners over a <video>. */
+/* Container sizes itself to the video at its natural intrinsic
+   aspect ratio (798:1440). The splash overlay matches the same
+   shape via position:absolute + width/height: 100%. clip-path
+   rounds the corners over both elements, including <video> pixels
+   that Safari otherwise won't clip with overflow:hidden. */
 .landing-media {
   position: relative;
-  width: 100%;
-  /* Phone aspect ratio = 798:1440. Forces the container to the
-     exact aspect of the source assets so children fill it edge-to-
-     edge without any letterboxing. */
-  aspect-ratio: 798 / 1440;
-  /* Cap by viewport height. With aspect-ratio set, dropping the
-     height cap pulls the width in proportionally — the whole
-     visual scales down as one unit. */
+  display: inline-block;
+  max-width: 100%;
   max-height: 78dvh;
-  /* The actual rounded-corner mask. clip-path is rasterized at the
-     GPU compositor and physically masks the rendered output —
-     this is the only universally reliable way to round corners
-     over a <video>, since <video> pixels in Safari ignore parent
-     overflow:hidden + border-radius. */
   clip-path: inset(0 round 22px);
-  /* Fallback for browsers without clip-path support (negligible
-     in 2026, but defensive). */
-  border-radius: 22px;
-  overflow: hidden;
-  /* Force a compositing layer — a third line of defense for
-     Chromium/WebKit edge cases. */
-  transform: translateZ(0);
 }
 
-.landing-media-splash,
 .landing-media-video {
-  /* Children fill the aspect-ratio-locked container exactly. No
-     object-fit needed since the container's aspect ratio matches
-     the source asset's, so cover and contain produce the same
-     result and there's no letterbox to deal with. */
+  display: block;
+  width: 100%;
+  max-height: 78dvh;
+  height: auto;
+  z-index: 1;
+}
+
+.landing-media-splash {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  display: block;
-  border-radius: inherit;
-}
-
-.landing-media-splash {
-  /* JS toggles opacity to 0 after the splash hold. Pointer-events
-     none so the (invisible) overlay doesn't intercept any clicks
-     after fade-out — defensive against the JS not running. */
   pointer-events: none;
   z-index: 2;
-  object-fit: cover;
-}
-
-.landing-media-video {
-  z-index: 1;
-  object-fit: cover;
 }
 
 .landing-footer {
