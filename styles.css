@@ -365,19 +365,16 @@ body.landing {
   flex-direction: column;
   background: var(--cream);
   overflow: hidden;
-  /* Anchor for the absolutely-positioned brand mark in the corner. */
-  position: relative;
 }
 
-/* Brand mark in the top-left corner — same icon used in the
-   header of the inner pages, scaled slightly larger here since
-   the landing page has no nav row to anchor it. Positioned
-   absolutely so it doesn't consume flex space (the no-scroll
-   layout below would otherwise reflow). */
+/* Brand mark in the top-left corner — anchored to the inner edge
+   of `.landing-main`'s padding so it lines up vertically with where
+   the headline copy starts. Absolutely positioned so it doesn't
+   consume flex space (no-scroll layout below would otherwise reflow). */
 .landing-mark {
   position: absolute;
-  top: 20px;
-  left: 24px;
+  top: 1.5rem;
+  left: 1.5rem;
   width: 44px;
   height: 44px;
   display: block;
@@ -388,8 +385,8 @@ body.landing {
 
 @media (min-width: 900px) {
   .landing-mark {
-    top: 28px;
-    left: 32px;
+    top: 2rem;
+    left: 3rem;
     width: 52px;
     height: 52px;
     border-radius: 12px;
@@ -408,6 +405,9 @@ body.landing {
   margin: 0 auto;
   width: 100%;
   min-height: 0;
+  /* Anchor for the absolutely-positioned brand mark above so it
+     aligns with the same horizontal edge as the headline copy. */
+  position: relative;
 }
 
 @media (min-width: 900px) {
@@ -685,13 +685,19 @@ body.landing {
 
 /* Stacking container so the splash PNG can sit on top of the video
    for the intro hold. Both are 798×1440 so they share the same
-   computed size with no layout shift. */
+   computed size with no layout shift. `overflow: hidden` +
+   `border-radius` here clips both children together so the rounded
+   corners apply to the splash PNG and the video as a single unit
+   (more robust than relying on each child's own border-radius,
+   which some browsers apply unevenly to <video>). */
 .landing-media {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 32px;
+  overflow: hidden;
 }
 
 .landing-media-splash {
