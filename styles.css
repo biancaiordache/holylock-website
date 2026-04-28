@@ -704,10 +704,11 @@ body.landing {
      edge without any letterboxing. */
   aspect-ratio: 798 / 1440;
   /* Cap by viewport height so the element shrinks proportionally
-     on short laptop screens — without this, the aspect-ratio
-     alone could push the container past 100dvh and break the
-     no-scroll layout. */
-  max-height: 72dvh;
+     and leaves visible breathing room above/below. With
+     aspect-ratio set, dropping the height cap also pulls the
+     width in proportionally — the whole visual scales down as
+     one unit. */
+  max-height: 62dvh;
   /* The actual rounded-corner mask. clip-path is rasterized at the
      GPU compositor and physically masks the rendered output —
      this is the only universally reliable way to round corners
@@ -751,6 +752,30 @@ body.landing {
   object-fit: cover;
 }
 
+/* Black pill that covers the "getbezel.app" badge baked into the
+   source video at the dynamic-island position. Sized + positioned
+   in % of the container so it tracks the video as it scales.
+   Tweak the four CSS variables below if the badge isn't perfectly
+   covered — they're the only knobs you should need. */
+.landing-media-bezel-mask {
+  --bezel-top: 16.5%;     /* distance from top of container */
+  --bezel-width: 30%;     /* width of the pill */
+  --bezel-height: 3.4%;   /* height of the pill */
+  --bezel-radius: 999px;  /* full pill rounding */
+
+  position: absolute;
+  top: var(--bezel-top);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--bezel-width);
+  height: var(--bezel-height);
+  background: #000;
+  border-radius: var(--bezel-radius);
+  z-index: 2;          /* above video (z:1), below splash (z:2 too,
+                          but splash is later in DOM so wins paint) */
+  pointer-events: none;
+}
+
 .landing-footer {
   padding: 0.85rem 1.5rem 1rem;
   text-align: center;
@@ -789,11 +814,61 @@ body.landing {
   color: var(--ink-faint);
 }
 
-/* On phones the screenshot crowds the headline if both fit. Hide the
-   screenshot below the small-tablet breakpoint so the copy + coming-
-   soon pill stay above the fold. */
+/* On phones the visual sits under the copy in the column layout,
+   sized so the page fits in one screen with a small scroll only if
+   needed. Tap-to-play (no autoplay) on mobile — JS adds the
+   `landing-media-needs-tap` class which surfaces the play button. */
 @media (max-width: 700px) {
   .landing-visual {
-    display: none;
+    max-width: 280px;
+    margin-top: 1rem;
   }
+}
+
+/* Play button overlay shown on mobile until the user taps. The
+   `::after` pseudo draws a soft white circle with a burgundy
+   play triangle inside, centered over the splash. Hidden once the
+   user taps and the JS removes the marker class. */
+.landing-media-needs-tap {
+  cursor: pointer;
+}
+
+.landing-media-needs-tap::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72px;
+  height: 72px;
+  margin-top: -36px;
+  margin-left: -36px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18);
+  z-index: 3;
+  pointer-events: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.landing-media-needs-tap::before {
+  /* The play triangle, centered inside the white circle above. CSS
+     borders form an equilateral triangle pointing right. */
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-top: -12px;
+  margin-left: -6px;
+  border-style: solid;
+  border-width: 12px 0 12px 18px;
+  border-color: transparent transparent transparent var(--burgundy);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.landing-media-needs-tap:active::after {
+  transform: scale(0.94);
+  opacity: 0.85;
 }

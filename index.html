@@ -81,6 +81,13 @@
           <source src="/hero-video.mp4" type="video/mp4" />
           <img src="/hero-splash.png" alt="HolyLock" />
         </video>
+        <!-- Black pill that covers the "getbezel.app" badge sitting
+             where the dynamic island should be in the source video.
+             Position is given as percentages of the container so it
+             tracks the video at every size. Tweak the four CSS
+             variables on .landing-media-bezel-mask if it doesn't
+             land on the badge precisely. -->
+        <div class="landing-media-bezel-mask" aria-hidden="true"></div>
         <img
           src="/hero-splash.png"
           alt=""
@@ -145,15 +152,17 @@
     })();
 
     // ============================================================
-    // Splash → hero video crossfade.
+    // Splash → hero video transition.
     //
-    // The PNG splash (hero-splash.png) sits on top of the <video>
-    // for the first ~2.2s, then fades out as the video starts
-    // playing underneath. Both assets are the same dimensions so
-    // there's no perceptible layout shift.
+    // Desktop: the PNG splash holds for ~2.2s then crossfades out
+    // as the video starts playing underneath (autoplay).
     //
-    // Reduced-motion users see the splash hold for the same 2.2s
-    // and then snap to the video without the fade.
+    // Mobile: NO autoplay. The splash sits over the video with a
+    // play-button overlay (CSS-driven via .landing-media-needs-tap)
+    // and the user must tap to start. Same crossfade once tapped.
+    //
+    // Reduced-motion users get a snap (no fade) instead of the
+    // 700ms opacity transition.
     // ============================================================
     (function () {
       var SPLASH_HOLD_MS = 2200;
@@ -161,14 +170,15 @@
 
       var splash = document.querySelector('[data-splash]');
       var video = document.querySelector('.landing-media-video');
-      if (!splash || !video) return;
+      var media = document.querySelector('.landing-media');
+      if (!splash || !video || !media) return;
 
       var prefersReduced = window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var isMobile = window.matchMedia &&
+        window.matchMedia('(max-width: 700px)').matches;
 
-      window.setTimeout(function () {
-        // Start the video first so its first frame is rendered by
-        // the time the splash has finished fading out.
+      function startVideo() {
         var playPromise = video.play();
         if (playPromise && typeof playPromise.catch === 'function') {
           playPromise.catch(function () { /* ignore autoplay rejection */ });
@@ -183,7 +193,19 @@
             splash.style.display = 'none';
           }, FADE_MS);
         }
-      }, SPLASH_HOLD_MS);
+      }
+
+      if (isMobile) {
+        // Surface the play button overlay and wait for the tap.
+        media.classList.add('landing-media-needs-tap');
+        media.addEventListener('click', function onTap() {
+          media.classList.remove('landing-media-needs-tap');
+          media.removeEventListener('click', onTap);
+          startVideo();
+        });
+      } else {
+        window.setTimeout(startVideo, SPLASH_HOLD_MS);
+      }
     })();
 
     // ============================================================
