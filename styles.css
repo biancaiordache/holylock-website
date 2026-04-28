@@ -686,10 +686,11 @@ body.landing {
 /* Stacking container so the splash PNG can sit on top of the video
    for the intro hold. Both are 798×1440 so they share the same
    computed size with no layout shift. `overflow: hidden` +
-   `border-radius` here clips both children together so the rounded
-   corners apply to the splash PNG and the video as a single unit
-   (more robust than relying on each child's own border-radius,
-   which some browsers apply unevenly to <video>). */
+   `border-radius` clip the children; `transform: translateZ(0)`
+   forces a compositing layer so the clip actually applies to
+   <video> pixels in Safari (WebKit otherwise lets the video draw
+   over the rounded corners). `isolation: isolate` is belt-and-
+   suspenders for Chrome/Firefox edge cases. */
 .landing-media {
   position: relative;
   width: 100%;
@@ -698,6 +699,16 @@ body.landing {
   justify-content: center;
   border-radius: 32px;
   overflow: hidden;
+  transform: translateZ(0);
+  isolation: isolate;
+}
+
+.landing-media-splash,
+.landing-media-video {
+  /* Inherit the rounded corners so the elements are clipped
+     individually too — a second line of defense in case the
+     compositing-layer trick on the parent is bypassed. */
+  border-radius: inherit;
 }
 
 .landing-media-splash {
