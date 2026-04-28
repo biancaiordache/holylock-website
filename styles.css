@@ -435,7 +435,7 @@ body.landing {
 
 .landing-app-name {
   display: inline-block;
-  color: var(--burgundy);
+  color: var(--rose);
   font-style: italic;
   font-weight: 700;
   /* Smooth swap that mirrors the SwiftUI Welcome2 transition:
@@ -450,7 +450,7 @@ body.landing {
 }
 
 .landing-accent {
-  color: var(--burgundy);
+  color: var(--rose);
   font-style: italic;
   font-weight: 700;
 }
