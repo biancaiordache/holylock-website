@@ -455,6 +455,13 @@ body.landing {
   font-weight: 700;
 }
 
+/* Upright variant — same burgundy + bold weight, no italic. Used in
+   the sub-copy ("Bible.") where italic competes with the upright
+   sans context, while the headline keeps the italic flourish. */
+.landing-accent-upright {
+  font-style: normal;
+}
+
 .landing-sub {
   font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
   color: var(--ink-muted);
