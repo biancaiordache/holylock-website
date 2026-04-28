@@ -683,49 +683,72 @@ body.landing {
   border-radius: 32px;
 }
 
-/* Stacking container so the splash PNG can sit on top of the video
-   for the intro hold. Both are 798×1440 so they share the same
-   computed size with no layout shift. `overflow: hidden` +
-   `border-radius` clip the children; `transform: translateZ(0)`
-   forces a compositing layer so the clip actually applies to
-   <video> pixels in Safari (WebKit otherwise lets the video draw
-   over the rounded corners). `isolation: isolate` is belt-and-
-   suspenders for Chrome/Firefox edge cases. */
+/* Stacking container — splash PNG on top of video. Both source
+   assets are 798×1440 (same aspect ratio as a phone in portrait).
+   We pin the container to that exact aspect ratio so the children
+   can fill it without any object-fit letterboxing escaping the
+   clip — this was the actual bug: <video> with object-fit:contain
+   was rendering pixels into the parent's letterbox area, which
+   sat outside the rounded corner clip in Safari.
+
+   `clip-path: inset(0 round 32px)` is the corner-rounding mechanism
+   here, NOT border-radius. clip-path is rasterized at the GPU
+   compositor and physically masks the rendered output regardless of
+   element type — so <video> pixels cannot draw past it. This is the
+   only universally reliable way to round corners over a <video>. */
 .landing-media {
   position: relative;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* Phone aspect ratio = 798:1440. Forces the container to the
+     exact aspect of the source assets so children fill it edge-to-
+     edge without any letterboxing. */
+  aspect-ratio: 798 / 1440;
+  /* Cap by viewport height so the element shrinks proportionally
+     on short laptop screens — without this, the aspect-ratio
+     alone could push the container past 100dvh and break the
+     no-scroll layout. */
+  max-height: 72dvh;
+  /* The actual rounded-corner mask. clip-path is rasterized at the
+     GPU compositor and physically masks the rendered output —
+     this is the only universally reliable way to round corners
+     over a <video>, since <video> pixels in Safari ignore parent
+     overflow:hidden + border-radius. */
+  clip-path: inset(0 round 32px);
+  /* Fallback for browsers without clip-path support (negligible
+     in 2026, but defensive). */
   border-radius: 32px;
   overflow: hidden;
+  /* Force a compositing layer — a third line of defense for
+     Chromium/WebKit edge cases. */
   transform: translateZ(0);
-  isolation: isolate;
 }
 
 .landing-media-splash,
 .landing-media-video {
-  /* Inherit the rounded corners so the elements are clipped
-     individually too — a second line of defense in case the
-     compositing-layer trick on the parent is bypassed. */
-  border-radius: inherit;
-}
-
-.landing-media-splash {
+  /* Children fill the aspect-ratio-locked container exactly. No
+     object-fit needed since the container's aspect ratio matches
+     the source asset's, so cover and contain produce the same
+     result and there's no letterbox to deal with. */
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  display: block;
+  border-radius: inherit;
+}
+
+.landing-media-splash {
   /* JS toggles opacity to 0 after the splash hold. Pointer-events
      none so the (invisible) overlay doesn't intercept any clicks
      after fade-out — defensive against the JS not running. */
   pointer-events: none;
   z-index: 2;
+  object-fit: cover;
 }
 
 .landing-media-video {
-  position: relative;
   z-index: 1;
+  object-fit: cover;
 }
 
 .landing-footer {
