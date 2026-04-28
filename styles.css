@@ -531,17 +531,17 @@ body.landing {
   width: 100%;
   /* Cap by dynamic viewport height so the visual never forces the
      page past 100dvh on short laptop displays or mobile when toolbars
-     are visible. Bumped to 85dvh to let the bigger phone breathe on
-     tall screens; on shorter laptops the dvh cap still keeps it
-     within the no-scroll viewport. */
+     are visible. */
   max-height: 85dvh;
   height: auto;
   object-fit: contain;
   display: block;
-  border-radius: 32px;
-  box-shadow: 0 20px 60px rgba(139, 64, 73, 0.12),
-              0 6px 20px rgba(139, 64, 73, 0.08);
-  background: var(--ivory);
+  /* No border-radius / shadow / background — the source video already
+     has its own cream backdrop framing the phone, so we let it blend
+     directly into the page's cream. The old border-radius + shadow
+     was for the still-image hero where the screenshot was just the
+     phone shape; reapplying it to a backdropped video produced a
+     visible "boxed" border. */
 }
 
 .landing-footer {
