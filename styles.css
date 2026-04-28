@@ -716,30 +716,41 @@ body.landing {
    compositor and physically masks the rendered output regardless of
    element type — so <video> pixels cannot draw past it. This is the
    only universally reliable way to round corners over a <video>. */
-/* Container holds shape of whichever child renders first — the
-   <video> at its native intrinsic size. No aspect-ratio override,
-   no object-fit cropping. The cream background fills any subpixel
-   rounding gaps at the corners so no white line shows through. */
+/* Container is locked to the source asset's exact aspect (798:1440
+   = same as the video AND the splash PNG). This gives the box a
+   stable shape immediately on first paint so clip-path has
+   something definite to round — without it, the container's
+   height was depending on whether the <video> had loaded yet,
+   sometimes collapsing to 0 height before the corners could
+   show as rounded.
+
+   Since the container's aspect EXACTLY matches the source assets,
+   `object-fit: cover` doesn't crop anything — the splash and
+   video render at their native proportions. Width-based capping
+   on .landing-visual (max-width: min(...) above) keeps vertical
+   overflow in check without ever clamping height directly, which
+   was the side-fill culprit. */
 .landing-media {
   position: relative;
-  display: block;
   width: 100%;
+  aspect-ratio: 798 / 1440;
   background: var(--cream);
   clip-path: inset(0 round 22px);
 }
 
-.landing-media-video {
-  display: block;
-  width: 100%;
-  height: auto;
-  z-index: 1;
-}
-
+.landing-media-video,
 .landing-media-splash {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.landing-media-video { z-index: 1; }
+
+.landing-media-splash {
   z-index: 2;
   pointer-events: none;
 }
