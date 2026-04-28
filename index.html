@@ -22,22 +22,43 @@
   <main class="landing-main">
     <div class="landing-copy">
       <h1 class="landing-headline">
-        Read first.<br />
-        <span class="landing-accent">Scroll second.</span>
+        <span class="landing-app-rotator" aria-live="polite">
+          <span class="landing-app-name" data-rotator>Instagram</span>
+        </span>
+        <span class="landing-headline-tail">is taking you away from <span class="landing-accent">God.</span></span>
       </h1>
       <p class="landing-sub">
         Open your Bible before your apps unlock. A soft, slow Scripture practice — meeting you where you are.
       </p>
-      <a href="#" class="landing-badge" aria-label="Download HolyLock on the App Store">
-        <!-- Drop the real Apple-provided SVG at /app-store-badge.svg and it'll render here. -->
-        <img src="/app-store-badge.svg" alt="Download on the App Store" width="220" height="66" />
-      </a>
+      <div class="landing-coming-soon" role="status" aria-label="Coming soon to the App Store">
+        <svg class="landing-coming-soon-apple" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M16.365 1.43c0 1.14-.42 2.22-1.13 3.02-.76.86-1.99 1.52-3 1.43-.13-1.13.42-2.31 1.1-3.06.77-.85 2.07-1.49 3.03-1.39zM20.5 17.05c-.55 1.27-.81 1.84-1.51 2.96-.99 1.57-2.39 3.53-4.13 3.55-1.54.02-1.94-.99-4.04-.98-2.1.01-2.54 1-4.08.98-1.74-.02-3.06-1.79-4.05-3.36-2.78-4.4-3.07-9.56-1.36-12.31 1.22-1.96 3.14-3.11 4.95-3.11 1.84 0 3 .99 4.52.99 1.48 0 2.38-1 4.51-1 1.61 0 3.31.86 4.53 2.34-3.99 2.16-3.34 7.79.66 9.94z"/>
+        </svg>
+        <span class="landing-coming-soon-text">
+          <span class="landing-coming-soon-eyebrow">Coming soon to the</span>
+          <span class="landing-coming-soon-store">App Store</span>
+        </span>
+      </div>
       <p class="landing-tagline">iPhone only · iOS 17 or later</p>
     </div>
 
     <div class="landing-visual">
-      <!-- Replace /hero-screenshot.png with one of the App Store screenshots. -->
-      <img src="/hero-screenshot.png" alt="HolyLock home screen" class="landing-screenshot" />
+      <!-- Autoplay-muted-loop-playsinline: required combo for iOS
+           Safari to play inline without a user tap. The poster
+           shows on slow connections + before the first frame loads. -->
+      <video
+        class="landing-screenshot"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="/hero-screenshot.png"
+        aria-label="HolyLock home screen preview"
+      >
+        <source src="/hero-video.mp4" type="video/mp4" />
+        <img src="/hero-screenshot.png" alt="HolyLock home screen" />
+      </video>
     </div>
   </main>
 
@@ -53,5 +74,47 @@
     </nav>
     <p>&copy; 2026 Bianca Iordache. Made with care.</p>
   </footer>
+
+  <script>
+    // Mirror the in-app Welcome2Screen rotation: swap app names with a
+    // soft fade + scale so the eye stays anchored on "is taking you
+    // away from God." Same apps, same cadence as the iOS app
+    // (~2.4s steady state, with one quick first-swap at 0.9s so the
+    // user sees the rotation mechanic before the next swap is due).
+    (function () {
+      var APPS = ['Instagram', 'TikTok', 'Snapchat', 'X'];
+      var FAST_SWAP_MS = 900;
+      var STEADY_SWAP_MS = 2400;
+      var FADE_MS = 450;
+      var node = document.querySelector('[data-rotator]');
+      if (!node) return;
+      var index = 0;
+
+      function show(name) {
+        node.style.opacity = '0';
+        node.style.transform = 'scale(0.85)';
+        window.setTimeout(function () {
+          node.textContent = name;
+          node.style.opacity = '1';
+          node.style.transform = 'scale(1)';
+        }, FADE_MS / 2);
+      }
+
+      function next() {
+        index = (index + 1) % APPS.length;
+        show(APPS[index]);
+      }
+
+      // Honor reduced-motion preferences — show one app and stop.
+      var prefersReduced = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+
+      window.setTimeout(function () {
+        next();
+        window.setInterval(next, STEADY_SWAP_MS);
+      }, FAST_SWAP_MS);
+    })();
+  </script>
 </body>
 </html>

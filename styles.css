@@ -336,12 +336,18 @@ blockquote cite {
    Store badge, a phone screenshot on the right, and a thin footer.
    ================================================================ */
 
+/* Landing page is locked to a single viewport — no scrolling.
+   Body fills 100dvh, main flexes to consume the space between the top
+   and the footer, footer pins to the bottom. Overflow hidden on small
+   screens too; the layout collapses to a stacked column that still
+   fits within the viewport on phones. */
 body.landing {
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--cream);
+  overflow: hidden;
 }
 
 .landing-main {
@@ -350,18 +356,19 @@ body.landing {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3rem;
-  padding: 3rem 1.5rem;
+  gap: 2rem;
+  padding: 1.5rem 1.5rem 0.5rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  min-height: 0;
 }
 
 @media (min-width: 900px) {
   .landing-main {
     flex-direction: row;
     gap: 4.5rem;
-    padding: 3rem;
+    padding: 2rem 3rem;
   }
 }
 
@@ -381,10 +388,48 @@ body.landing {
   font-family: 'EB Garamond', 'Fraunces', Georgia, serif;
   color: var(--ink);
   font-weight: 600;
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 1.05;
+  /* Smaller than the old "Read first." wording — the new headline is
+     longer, so we cap the type a little tighter to keep it on three
+     lines on desktop and within the viewport on phones. */
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  line-height: 1.1;
   letter-spacing: -0.015em;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .landing-headline {
+    align-items: flex-start;
+  }
+}
+
+.landing-app-rotator {
+  display: inline-block;
+  /* Reserve roughly the width of the longest app name ("Snapchat") so
+     the second line doesn't reflow as the rotator cycles. The exact
+     width comes from the first paint; this just smooths the transition
+     until JS hydrates. */
+  min-height: 1em;
+}
+
+.landing-app-name {
+  display: inline-block;
+  color: var(--burgundy);
+  font-style: italic;
+  font-weight: 700;
+  /* Smooth swap that mirrors the SwiftUI Welcome2 transition:
+     opacity + scale, easing into the new word. */
+  transition:
+    opacity 0.45s ease-in-out,
+    transform 0.45s ease-in-out;
+}
+
+.landing-headline-tail {
+  display: inline-block;
 }
 
 .landing-accent {
@@ -394,18 +439,11 @@ body.landing {
 }
 
 .landing-sub {
-  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
   color: var(--ink-muted);
   line-height: 1.45;
-  margin-bottom: 1rem;
-  max-width: 32ch;
-}
-
-@media (min-width: 900px) {
-  .landing-sub {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  margin-bottom: 1.25rem;
+  max-width: 36ch;
 }
 
 .landing-copy .landing-sub {
@@ -420,59 +458,92 @@ body.landing {
   }
 }
 
-.landing-badge {
-  display: inline-block;
-  transition: opacity 0.15s, transform 0.15s;
+/* "Coming soon to the App Store" — built to read like the real Apple
+   badge so it sets the right expectation, but visibly labeled as a
+   forthcoming launch. Non-interactive (no link / no hover). */
+.landing-coming-soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.55rem 1.1rem 0.6rem;
+  border-radius: 12px;
+  user-select: none;
 }
 
-.landing-badge:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.landing-coming-soon-apple {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
 }
 
-.landing-badge img {
-  width: 200px;
-  height: auto;
-  display: block;
+.landing-coming-soon-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  text-align: left;
+}
+
+.landing-coming-soon-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+
+.landing-coming-soon-store {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .landing-tagline {
-  margin-top: 0;
+  margin: 0.85rem 0 0;
   color: var(--ink-faint);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.02em;
 }
 
 .landing-visual {
   width: 100%;
-  max-width: 260px;
+  max-width: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 0;
+  flex-shrink: 1;
 }
 
 @media (min-width: 900px) {
   .landing-visual {
-    max-width: 300px;
+    max-width: 280px;
   }
 }
 
 .landing-screenshot {
   width: 100%;
+  /* Cap by dynamic viewport height so the visual never forces the
+     page past 100dvh on short laptop displays or mobile when toolbars
+     are visible. `dvh` matches the body's height unit. */
+  max-height: 70dvh;
   height: auto;
+  object-fit: contain;
   display: block;
   border-radius: 32px;
   box-shadow: 0 20px 60px rgba(139, 64, 73, 0.12),
               0 6px 20px rgba(139, 64, 73, 0.08);
+  background: var(--ivory);
 }
 
 .landing-footer {
-  padding: 1.5rem;
+  padding: 0.85rem 1.5rem 1rem;
   text-align: center;
   color: var(--ink-faint);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   border-top: none;
   margin-top: 0;
+  flex-shrink: 0;
 }
 
 .landing-footer nav {
@@ -481,7 +552,7 @@ body.landing {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 
 .landing-footer nav a {
@@ -501,4 +572,13 @@ body.landing {
 .landing-footer p {
   margin: 0;
   color: var(--ink-faint);
+}
+
+/* On phones the screenshot crowds the headline if both fit. Hide the
+   screenshot below the small-tablet breakpoint so the copy + coming-
+   soon pill stay above the fold. */
+@media (max-width: 700px) {
+  .landing-visual {
+    display: none;
+  }
 }
