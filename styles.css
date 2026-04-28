@@ -654,6 +654,34 @@ body.landing {
   border-radius: 32px;
 }
 
+/* Stacking container so the splash PNG can sit on top of the video
+   for the intro hold. Both are 798×1440 so they share the same
+   computed size with no layout shift. */
+.landing-media {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-media-splash {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* JS toggles opacity to 0 after the splash hold. Pointer-events
+     none so the (invisible) overlay doesn't intercept any clicks
+     after fade-out — defensive against the JS not running. */
+  pointer-events: none;
+  z-index: 2;
+}
+
+.landing-media-video {
+  position: relative;
+  z-index: 1;
+}
+
 .landing-footer {
   padding: 0.85rem 1.5rem 1rem;
   text-align: center;

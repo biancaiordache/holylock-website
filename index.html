@@ -55,22 +55,33 @@
     </div>
 
     <div class="landing-visual">
-      <!-- Autoplay-muted-loop-playsinline: required combo for iOS
-           Safari to play inline without a user tap. The poster
-           shows on slow connections + before the first frame loads. -->
-      <video
-        class="landing-screenshot"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster="/hero-screenshot.png"
-        aria-label="HolyLock home screen preview"
-      >
-        <source src="/hero-video.mp4" type="video/mp4" />
-        <img src="/hero-screenshot.png" alt="HolyLock home screen" />
-      </video>
+      <!-- Splash → video sequence. The PNG splash sits on top of the
+           video (both are 798×1440 so they share the container with
+           no layout shift). After ~2.2s the JS handler fades the
+           splash out and starts the video. Autoplay-muted-loop-
+           playsinline is the required combo for iOS Safari to play
+           inline without a user tap. -->
+      <div class="landing-media">
+        <video
+          class="landing-screenshot landing-media-video"
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster="/hero-splash.png"
+          aria-label="HolyLock home screen preview"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+          <img src="/hero-splash.png" alt="HolyLock" />
+        </video>
+        <img
+          src="/hero-splash.png"
+          alt=""
+          aria-hidden="true"
+          class="landing-screenshot landing-media-splash"
+          data-splash
+        />
+      </div>
     </div>
   </main>
 
@@ -124,6 +135,48 @@
         next();
         window.setInterval(next, STEADY_SWAP_MS);
       }, FAST_SWAP_MS);
+    })();
+
+    // ============================================================
+    // Splash → hero video crossfade.
+    //
+    // The PNG splash (hero-splash.png) sits on top of the <video>
+    // for the first ~2.2s, then fades out as the video starts
+    // playing underneath. Both assets are the same dimensions so
+    // there's no perceptible layout shift.
+    //
+    // Reduced-motion users see the splash hold for the same 2.2s
+    // and then snap to the video without the fade.
+    // ============================================================
+    (function () {
+      var SPLASH_HOLD_MS = 2200;
+      var FADE_MS = 700;
+
+      var splash = document.querySelector('[data-splash]');
+      var video = document.querySelector('.landing-media-video');
+      if (!splash || !video) return;
+
+      var prefersReduced = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      window.setTimeout(function () {
+        // Start the video first so its first frame is rendered by
+        // the time the splash has finished fading out.
+        var playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(function () { /* ignore autoplay rejection */ });
+        }
+
+        if (prefersReduced) {
+          splash.style.display = 'none';
+        } else {
+          splash.style.transition = 'opacity ' + FADE_MS + 'ms ease-out';
+          splash.style.opacity = '0';
+          window.setTimeout(function () {
+            splash.style.display = 'none';
+          }, FADE_MS);
+        }
+      }, SPLASH_HOLD_MS);
     })();
 
     // ============================================================
