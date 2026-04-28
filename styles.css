@@ -703,12 +703,10 @@ body.landing {
      exact aspect of the source assets so children fill it edge-to-
      edge without any letterboxing. */
   aspect-ratio: 798 / 1440;
-  /* Cap by viewport height so the element shrinks proportionally
-     and leaves visible breathing room above/below. With
-     aspect-ratio set, dropping the height cap also pulls the
-     width in proportionally — the whole visual scales down as
-     one unit. */
-  max-height: 62dvh;
+  /* Cap by viewport height. With aspect-ratio set, dropping the
+     height cap pulls the width in proportionally — the whole
+     visual scales down as one unit. */
+  max-height: 78dvh;
   /* The actual rounded-corner mask. clip-path is rasterized at the
      GPU compositor and physically masks the rendered output —
      this is the only universally reliable way to round corners
@@ -750,30 +748,6 @@ body.landing {
 .landing-media-video {
   z-index: 1;
   object-fit: cover;
-}
-
-/* Black pill that covers the "getbezel.app" badge baked into the
-   source video at the dynamic-island position. Sized + positioned
-   in % of the container so it tracks the video as it scales.
-   Tweak the four CSS variables below if the badge isn't perfectly
-   covered — they're the only knobs you should need. */
-.landing-media-bezel-mask {
-  --bezel-top: 16.5%;     /* distance from top of container */
-  --bezel-width: 30%;     /* width of the pill */
-  --bezel-height: 3.4%;   /* height of the pill */
-  --bezel-radius: 999px;  /* full pill rounding */
-
-  position: absolute;
-  top: var(--bezel-top);
-  left: 50%;
-  transform: translateX(-50%);
-  width: var(--bezel-width);
-  height: var(--bezel-height);
-  background: #000;
-  border-radius: var(--bezel-radius);
-  z-index: 2;          /* above video (z:1), below splash (z:2 too,
-                          but splash is later in DOM so wins paint) */
-  pointer-events: none;
 }
 
 .landing-footer {
