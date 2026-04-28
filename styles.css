@@ -373,6 +373,8 @@ body.landing {
    consume flex space (no-scroll layout below would otherwise reflow). */
 .landing-mark {
   position: absolute;
+  /* Pinned to the same edge as the .landing-main padding so the
+     icon's distance from the page edge matches the copy's. */
   top: 1.5rem;
   left: 1.5rem;
   width: 44px;
@@ -385,7 +387,7 @@ body.landing {
 
 @media (min-width: 900px) {
   .landing-mark {
-    top: 2rem;
+    top: 3rem;
     left: 3rem;
     width: 52px;
     height: 52px;
@@ -400,7 +402,10 @@ body.landing {
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  padding: 1.5rem 1.5rem 0.5rem;
+  /* Equal padding on all four sides so the visual edge spacing
+     matches the icon's position above and the footer's bottom
+     space below. 1.5rem mobile, 3rem desktop. */
+  padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -414,7 +419,10 @@ body.landing {
   .landing-main {
     flex-direction: row;
     gap: 4.5rem;
-    padding: 2rem 3rem;
+    /* Equal 3rem on all four sides on desktop so the icon, copy,
+       visual, and footer all sit the same distance from the
+       page edge. */
+    padding: 3rem;
   }
 }
 
@@ -422,11 +430,18 @@ body.landing {
   width: 100%;
   max-width: 640px;
   text-align: center;
+  /* Push the copy down a touch so the headline reads as more
+     vertically centered against the visual on its right. The icon
+     in the top corner already eats some optical weight at the
+     top, so the centered flex content needed a nudge down to
+     feel balanced. */
+  padding-top: 2.5rem;
 }
 
 @media (min-width: 900px) {
   .landing-copy {
     text-align: left;
+    padding-top: 4rem;
   }
 }
 
@@ -718,10 +733,10 @@ body.landing {
      this is the only universally reliable way to round corners
      over a <video>, since <video> pixels in Safari ignore parent
      overflow:hidden + border-radius. */
-  clip-path: inset(0 round 32px);
+  clip-path: inset(0 round 22px);
   /* Fallback for browsers without clip-path support (negligible
      in 2026, but defensive). */
-  border-radius: 32px;
+  border-radius: 22px;
   overflow: hidden;
   /* Force a compositing layer — a third line of defense for
      Chromium/WebKit edge cases. */
