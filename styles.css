@@ -365,6 +365,35 @@ body.landing {
   flex-direction: column;
   background: var(--cream);
   overflow: hidden;
+  /* Anchor for the absolutely-positioned brand mark in the corner. */
+  position: relative;
+}
+
+/* Brand mark in the top-left corner — same icon used in the
+   header of the inner pages, scaled slightly larger here since
+   the landing page has no nav row to anchor it. Positioned
+   absolutely so it doesn't consume flex space (the no-scroll
+   layout below would otherwise reflow). */
+.landing-mark {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  width: 44px;
+  height: 44px;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  z-index: 5;
+}
+
+@media (min-width: 900px) {
+  .landing-mark {
+    top: 28px;
+    left: 32px;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+  }
 }
 
 .landing-main {
