@@ -710,34 +710,44 @@ body.landing {
    compositor and physically masks the rendered output regardless of
    element type — so <video> pixels cannot draw past it. This is the
    only universally reliable way to round corners over a <video>. */
-/* Container sizes itself to the video at its natural intrinsic
-   aspect ratio (798:1440). The splash overlay matches the same
-   shape via position:absolute + width/height: 100%. clip-path
-   rounds the corners over both elements, including <video> pixels
-   that Safari otherwise won't clip with overflow:hidden. */
+/* Container locked to the source asset's exact aspect ratio
+   (798:1440 = the iPhone-portrait shape both the video and splash
+   were exported at). With aspect-ratio + max-height set together,
+   modern browsers pull the width in proportionally when the height
+   cap kicks in, so the box never gets wider than tall in the wrong
+   ratio (which was making the video letterbox into the extra
+   width — the "filling the sides" issue). The cream background
+   fills any subpixel rounding gaps so no white line peeks through
+   the corners during the splash. */
 .landing-media {
   position: relative;
-  display: inline-block;
-  max-width: 100%;
+  width: 100%;
+  aspect-ratio: 798 / 1440;
   max-height: 78dvh;
+  background: var(--cream);
   clip-path: inset(0 round 22px);
 }
 
-.landing-media-video {
-  display: block;
-  width: 100%;
-  max-height: 78dvh;
-  height: auto;
-  z-index: 1;
-}
-
+.landing-media-video,
 .landing-media-splash {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  display: block;
+  /* Both source assets match the container's aspect ratio
+     exactly, so cover and contain produce identical pixel output —
+     no cropping, no letterboxing. */
+  object-fit: cover;
+}
+
+.landing-media-video {
+  z-index: 1;
+}
+
+.landing-media-splash {
   z-index: 2;
+  pointer-events: none;
 }
 
 .landing-footer {
