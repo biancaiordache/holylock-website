@@ -388,13 +388,13 @@ body.landing {
   font-family: 'EB Garamond', 'Fraunces', Georgia, serif;
   color: var(--ink);
   font-weight: 600;
-  /* Smaller than the old "Read first." wording — the new headline is
-     longer, so we cap the type a little tighter to keep it on three
-     lines on desktop and within the viewport on phones. */
-  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
-  line-height: 1.1;
+  /* Bigger pass — the rotating headline gets to feel like the hero
+     it is. Caps at 5.5rem on wide screens and scales down to 2.75rem
+     on small phones so it still fits the no-scroll viewport. */
+  font-size: clamp(2.75rem, 7vw, 5.5rem);
+  line-height: 1.05;
   letter-spacing: -0.015em;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.15em;
@@ -439,10 +439,10 @@ body.landing {
 }
 
 .landing-sub {
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
   color: var(--ink-muted);
-  line-height: 1.45;
-  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
   max-width: 36ch;
 }
 
@@ -507,7 +507,7 @@ body.landing {
 
 .landing-visual {
   width: 100%;
-  max-width: 220px;
+  max-width: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -517,7 +517,13 @@ body.landing {
 
 @media (min-width: 900px) {
   .landing-visual {
-    max-width: 280px;
+    max-width: 380px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .landing-visual {
+    max-width: 440px;
   }
 }
 
@@ -525,8 +531,10 @@ body.landing {
   width: 100%;
   /* Cap by dynamic viewport height so the visual never forces the
      page past 100dvh on short laptop displays or mobile when toolbars
-     are visible. `dvh` matches the body's height unit. */
-  max-height: 70dvh;
+     are visible. Bumped to 85dvh to let the bigger phone breathe on
+     tall screens; on shorter laptops the dvh cap still keeps it
+     within the no-scroll viewport. */
+  max-height: 85dvh;
   height: auto;
   object-fit: contain;
   display: block;
