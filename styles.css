@@ -112,6 +112,23 @@ header .wordmark {
   letter-spacing: -0.01em;
 }
 
+/* Image-variant of the wordmark used on inner pages. The square
+   icon gets rounded corners that match the iOS app icon's continuous
+   curve so the website header reads as a small extension of the app. */
+header .wordmark-icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+header .wordmark-icon img {
+  width: 40px;
+  height: 40px;
+  display: block;
+  border-radius: 9px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
 header nav {
   display: flex;
   gap: 1.5rem;
