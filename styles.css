@@ -747,30 +747,7 @@ body.landing {
   height: 100%;
   clip-path: inset(0 round 22px);
   pointer-events: none;
-  z-index: 3;  /* above bezel mask + video so splash hides both */
-}
-
-/* Black pill over the "getbezel.app" badge at the dynamic-island
-   position. Position derived from frames extracted from the source
-   video. Percentages of the container so the pill tracks the
-   video at every scale. The four CSS variables below are the only
-   knobs you should need if it doesn't land right. */
-.landing-media-bezel-mask {
-  --bezel-top: 8.5%;
-  --bezel-width: 26%;
-  --bezel-height: 4%;
-  --bezel-radius: 999px;
-
-  position: absolute;
-  top: var(--bezel-top);
-  left: 50%;
-  transform: translateX(-50%);
-  width: var(--bezel-width);
-  height: var(--bezel-height);
-  background: #000;
-  border-radius: var(--bezel-radius);
-  z-index: 2;       /* above video (1), below splash (3) */
-  pointer-events: none;
+  z-index: 2;
 }
 
 .landing-footer {
