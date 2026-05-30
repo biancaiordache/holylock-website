@@ -525,9 +525,9 @@ body.landing {
   }
 }
 
-/* "Coming soon to the App Store" — small eyebrow row above the
-   notify-me form. Apple glyph + plain text in muted ink so it sets
-   context without competing with the form for attention. */
+/* "Now available on iPhone" — small eyebrow row above the App
+   Store badge. Apple glyph + plain text in muted ink so it sets
+   context without competing with the badge for attention. */
 .landing-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -546,104 +546,27 @@ body.landing {
   color: var(--ink);
 }
 
-/* Inline notify-me form — pill-shaped row with the email input on
-   the left and the rose CTA button on the right. Matches the rose
-   accent used elsewhere in the design. */
-.landing-notify {
-  display: flex;
-  align-items: stretch;
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 420px;
-  margin: 0;
+/* "Download on the App Store" — Apple's official badge artwork
+   (app-store-badge.svg). Sized by height; the SVG keeps its own
+   aspect ratio. Subtle lift on hover to match the site's buttons. */
+.landing-appstore {
+  display: inline-block;
+  text-decoration: none;
+  transition: transform 0.15s;
 }
 
-.landing-copy .landing-notify {
-  margin-left: auto;
-  margin-right: auto;
+.landing-appstore img {
+  display: block;
+  height: 54px;
+  width: auto;
 }
 
-@media (min-width: 900px) {
-  .landing-copy .landing-notify {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-.landing-notify-input {
-  flex: 1;
-  min-width: 0;
-  padding: 0.85rem 1.1rem;
-  font-family: inherit;
-  font-size: 1rem;
-  color: var(--ink);
-  background: var(--ivory);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 999px;
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-
-.landing-notify-input::placeholder {
-  color: var(--ink-faint);
-}
-
-.landing-notify-input:focus {
-  border-color: var(--rose);
-  box-shadow: 0 0 0 3px rgba(212, 165, 165, 0.25);
-}
-
-.landing-notify-button {
-  flex-shrink: 0;
-  padding: 0.85rem 1.4rem;
-  font-family: inherit;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #fff;
-  background: var(--rose);
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(212, 165, 165, 0.35);
-  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
-}
-
-.landing-notify-button:hover {
+.landing-appstore:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(212, 165, 165, 0.45);
 }
 
-.landing-notify-button:active {
+.landing-appstore:active {
   transform: translateY(0);
-}
-
-.landing-notify-button:disabled {
-  background: var(--rose-pale);
-  color: var(--ink-faint);
-  cursor: default;
-  box-shadow: none;
-  transform: none;
-}
-
-.landing-notify-help {
-  margin: 0.55rem 0 0;
-  color: var(--ink-faint);
-  font-size: 0.8125rem;
-}
-
-.landing-notify-help-error {
-  color: var(--burgundy);
-}
-
-.landing-notify-confirmation {
-  margin: 0;
-  padding: 0.85rem 1.1rem;
-  background: var(--rose-pale);
-  border-radius: 12px;
-  color: var(--burgundy);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  text-align: center;
 }
 
 /* Screen-reader-only utility for visually hidden labels. */
